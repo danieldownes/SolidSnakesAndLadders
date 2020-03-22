@@ -4,7 +4,7 @@ namespace SnakesAndLadders
 {
     internal class Turn
     {
-        public Action<int> NextTurn;
+        public Action<int> OnNextTurn;
 
         private int playerIndex;
         private int playerCount;
@@ -17,7 +17,6 @@ namespace SnakesAndLadders
         internal void Reset()
         {
             playerIndex = 0;
-            NextTurn?.Invoke(playerIndex);
         }
 
         public void Next()
@@ -26,7 +25,7 @@ namespace SnakesAndLadders
             if( playerIndex >= playerCount )
                 playerIndex = 0;
 
-            NextTurn?.Invoke(playerIndex);
+            OnNextTurn?.Invoke(playerIndex);
         }
 
     }

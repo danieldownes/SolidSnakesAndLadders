@@ -2,18 +2,23 @@
 
 internal abstract class Player
 {
-    public Action Roll;
+    public Action OnRoll;
 
     public int Id;
-    public int PlaceId;
+    public int PlaceId { get; private set; }
 
     public virtual void StartTurn()
     {
 
     }
 
-    internal void MoveTo(int d)
+    internal void MoveBy(int d)
     {
         PlaceId += d;
+    }
+
+    internal void MoveTo(int placeId)
+    {
+        PlaceId = placeId;
     }
 }

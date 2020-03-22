@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Ui : MonoBehaviour
 {
-    public Action NewGame;
-    public Action Pause;
-    public Action UnPause;
-    public Action HumanRoll;
+    public Action OnNewGame;
+    public Action OnPause;
+    public Action OnUnPause;
+    public Action OnHumanRoll;
 
     [SerializeField]
     private GameObject menuView;
@@ -18,14 +18,13 @@ public class Ui : MonoBehaviour
     private GameObject pauseView;
 
     [SerializeField]
-    private GameObject gameoverView;
+    private GameOverUi gameoverView;
 
 
     public void Init()
     {
-        gameUi.Roll += RollClick;
+        gameUi.OnRoll += RollClick;
     }
-
 
     public void DiceRolled(int diceValue)
     {
@@ -54,9 +53,10 @@ public class Ui : MonoBehaviour
         showScreen(pauseView);
     }
 
-    public void ShowGameoverScreen()
+    public void ShowGameoverScreen(bool humanWon)
     {
-        showScreen(gameoverView);
+        gameoverView.UpdateResult(humanWon);
+        showScreen(gameoverView.gameObject);
     }
 
 
@@ -66,30 +66,33 @@ public class Ui : MonoBehaviour
         gameUi.gameObject.SetActive(gameUi.gameObject == screenObject);
         menuView.SetActive(menuView == screenObject);
         pauseView.SetActive(pauseView == screenObject);
-        gameoverView.SetActive(gameoverView == screenObject);
+        gameoverView.gameObject.SetActive(gameoverView.gameObject == screenObject);
     }
 
     // UI bound in editor
 
     public void NewGameClick()
     {
+        gameUi.Init();
         ShowGameScreen();
-        NewGame?.Invoke();
+        OnNewGame?.Invoke();
     }
 
     public void RollClick()
     {
-        HumanRoll?.Invoke();
+        OnHumanRoll?.Invoke();
     }
 
     public void PauseClick()
     {
-        Pause?.Invoke();
+        ShowPauseScreen();
+        OnPause?.Invoke();
     }
 
     public void UnpauseClick()
     {
-        UnPause?.Invoke();
+        ShowGameScreen();
+        OnUnPause?.Invoke();
     }
 
 }

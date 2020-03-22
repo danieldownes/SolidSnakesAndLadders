@@ -1,9 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 internal class Board
 {
     private List<Place> places;
     private GameView gameView;
+
+    public int EndPlace
+    {
+        get
+        {
+            return places.Count - 1;
+        }
+    }
 
     public void Inject(GameView gameView, List<Place> places)
     {
@@ -14,7 +23,7 @@ internal class Board
     internal void SetupFromView()
     {
         var placesJumpNextValues = gameView.PieceJumpNextValues();
-        
+
         foreach( int jumpIndex in placesJumpNextValues )
             places.Add(new Place(jumpIndex));
     }
@@ -25,5 +34,10 @@ internal class Board
             return 0;
 
         return places[placeId].JumpTo - placeId;
+    }
+
+    internal bool ReachedEndPlace(int placeId)
+    {
+        return placeId >= EndPlace;
     }
 }

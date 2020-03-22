@@ -4,7 +4,7 @@
     {
         public override void StartTurn()
         {
-            Roll?.Invoke();
+            OnRoll?.Invoke();
         }
     }
 }

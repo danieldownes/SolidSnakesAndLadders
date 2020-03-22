@@ -26,22 +26,27 @@ public class Installer : MonoBehaviour
         game.SetPlayers(new List<Player> { human, bot });
 
         // Event bindings
-        ui.NewGame += game.StartNew;
-        ui.Pause += game.Pause;
-        ui.UnPause += game.UnPause;
+        ui.OnNewGame += game.StartNew;
+        ui.OnNewGame += gameView.ResetView;
+        ui.OnPause += game.Pause;
+        ui.OnUnPause += game.UnPause;
 
-        turn.NextTurn += ui.NextTurn;
-        turn.NextTurn += game.WaitForRoll;
-        ui.HumanRoll += game.RollDice;
-        bot.Roll += game.RollDice;
-        game.RolledDice += ui.DiceRolled;
-        game.MovePlayer += gameView.PositionPlayer;
-        gameView.PlayerMoveCompleted += game.CheckForSnakeOrLadder;
+        turn.OnNextTurn += ui.NextTurn;
+        ui.OnHumanRoll += game.RollDice;
+        bot.OnRoll += game.RollDice;
+        game.OnDiceRolled += ui.DiceRolled;
+        game.OnMovePlayer += gameView.PositionPlayer;
+        gameView.OnMoveCompleted += game.PostMoveChecks;
+        game.OnGameOver += ui.ShowGameoverScreen;
 
         // Initialise
         ui.Init();
         gameView.Init();
 
+        // Run
+        ui.ShowMenuScreen();
+
+        return;
 
         // Dev helper
         game.StartNew();

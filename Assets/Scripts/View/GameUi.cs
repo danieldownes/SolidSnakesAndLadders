@@ -5,17 +5,24 @@ using UnityEngine.UI;
 
 public class GameUi : MonoBehaviour
 {
-    public Action Roll;
+    public Action OnRoll;
 
     public TextMeshProUGUI TurnLabel;
     public TextMeshProUGUI RollLabel;
     public Button RollButton;
+
+    internal void Init()
+    {
+        RollLabel.text = "Roll to start game";
+        RollButton.interactable = true;
+    }
 
     public void UpdateTurn(bool humansTurn)
     {
         if( humansTurn )
         {
             TurnLabel.text = "Your turn";
+            RollLabel.text = "Press Roll";
             RollButton.interactable = true;
         }
         else
@@ -32,6 +39,6 @@ public class GameUi : MonoBehaviour
     public void RollClicked()
     {
         RollButton.interactable = false;
-        Roll?.Invoke();
+        OnRoll?.Invoke();
     }
 }
