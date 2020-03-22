@@ -8,9 +8,9 @@ namespace SnakesAndLadders
     {
         public Action OnNewGame;
         public Action OnWaitingForRoll;
-        public Action<int> OnDiceRolled;
-        public Action<int, int> OnMovePlayer;
-        public Action<bool> OnGameOver; // True = You win
+        public Action<int> OnDiceRolled;        // Dice Value
+        public Action<int, int> OnMovePlayer;   // PlayerId, PlaceId
+        public Action<bool> OnGameOver;         // True = You win
 
         private Board board;
         private IDice dice;
@@ -26,12 +26,16 @@ namespace SnakesAndLadders
             this.turn = turn;
         }
 
+        public void Init()
+        {
+            board.SetupFromView();
+        }
+
         internal void StartNew()
         {
             currentPlayer = players[0];
             turn.OnNextTurn += WaitForRoll;
             resetPlayers();
-            board.SetupFromView();
             turn.Reset();
         }
 

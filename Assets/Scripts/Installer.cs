@@ -42,16 +42,10 @@ public class Installer : MonoBehaviour
         // Initialise
         ui.Init();
         gameView.Init();
+        game.Init();
 
         // Run
         ui.ShowMenuScreen();
 
-        return;
-
-        // Dev helper
-        game.StartNew();
-        ui.ShowGameScreen();
     }
-
-
 }
