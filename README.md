@@ -14,7 +14,8 @@ The main point for the evaluation is applying SOLID principles
 # PLAN OF ATTACK #
 
 Obtain some basic template graphics
-Prep them in GIMP and import into project
+Prep them and import into project
+ - Decided just to use basic primatives to save time.
 
 Scene Prep.:
 
