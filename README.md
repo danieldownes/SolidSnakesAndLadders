@@ -41,7 +41,7 @@ Setup Game View:
 	with a more interesting layout than an actual grid. Grid generation code is 
 	1st year Uni anyway, pretty boring!
 
-	Players. Green and Red spheres.
+	Players. Green and Blue spheres.
 
 	Snakes & Ladders using preped assets
 	Will be fixed places. But will create a view class that allows defining which grid position
@@ -69,4 +69,11 @@ Class Planning:
 	BoardView - Reference to board and places
 	Ui - Purely for windows/panels
 	
+
+
+# DEV NOTES #
+
+Ui related:
+Normally I would include button events on a per screen
+view class basis, and then delegate to UI controller where required.
 
