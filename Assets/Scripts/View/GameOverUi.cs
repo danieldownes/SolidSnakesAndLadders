@@ -1,16 +1,18 @@
 ﻿using TMPro;
 using UnityEngine;
 
-public class GameOverUi : MonoBehaviour
+namespace SnakesAndLadders
 {
-    public TextMeshProUGUI Result;
-
-    public void UpdateResult(bool humanWon)
+    public class GameOverUi : MonoBehaviour
     {
-        if( humanWon == true)
-            Result.text = "You Win!!!";
-        else
-            Result.text = "You Lose :(";
-    }
+        public TextMeshProUGUI Result;
 
+        public void UpdateResult(bool humanWon)
+        {
+            if( humanWon == true )
+                Result.text = "You Win!!!";
+            else
+                Result.text = "You Lose :(";
+        }
+    }
 }

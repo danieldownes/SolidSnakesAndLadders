@@ -1,51 +1,55 @@
 ﻿using UnityEngine;
-using SnakesAndLadders;
 using System.Collections.Generic;
 
-public class Installer : MonoBehaviour
+namespace SnakesAndLadders
 {
-    [SerializeField]
-    private Ui ui;
-    
-    [SerializeField]
-    private GameView gameView;
-
-    void Start()
+    public class Installer : MonoBehaviour
     {
-        // Instigate
-        Game game = new Game();
-        IDice dice = new DiceUnityRandom();
-        Board board = new Board();
-        Turn turn = new Turn();
-        Player human = new PlayerHuman();
-        Player bot = new PlayerBot();
+        [SerializeField]
+        private Ui ui;
 
-        // Injections
-        board.Inject(gameView, new List<Place>());
-        game.Inject(board, dice, turn);
-        game.SetPlayers(new List<Player> { human, bot });
+        [SerializeField]
+        private GameView gameView;
 
-        // Event bindings
-        ui.OnNewGame += game.StartNew;
-        ui.OnNewGame += gameView.ResetView;
-        ui.OnPause += game.Pause;
-        ui.OnUnPause += game.UnPause;
+        private void Start()
+        {
+            // Instigate
+            Game game = new Game();
+            IDice dice = new DiceUnityRandom();
+            Board board = new Board();
+            Turn turn = new Turn();
+            Player human = new PlayerHuman();
+            Player bot = new PlayerBot();
+            IPause pause = new PauseUnityTimeScale();
 
-        turn.OnNextTurn += ui.NextTurn;
-        ui.OnHumanRoll += game.RollDice;
-        bot.OnRoll += game.RollDice;
-        game.OnDiceRolled += ui.DiceRolled;
-        game.OnMovePlayer += gameView.PositionPlayer;
-        gameView.OnMoveCompleted += game.PostMoveChecks;
-        game.OnGameOver += ui.ShowGameoverScreen;
+            // Injections
+            board.Inject(gameView, new List<Place>());
+            game.Inject(board, dice, turn);
+            game.SetPlayers(new List<Player> { human, bot });
 
-        // Initialise
-        ui.Init();
-        gameView.Init();
-        game.Init();
+            // Event bindings
+            ui.OnNewGame += game.StartNew;
+            ui.OnNewGame += gameView.ResetView;
+            ui.OnPause += pause.Pause;
+            ui.OnUnPause += pause.UnPause;
 
-        // Run
-        ui.ShowMenuScreen();
+            turn.OnNextTurn += ui.NextTurn;
+            //game.OnWaitingForRoll + turn.StartNext;
+            ui.OnHumanRoll += game.RollDice;
+            bot.OnRoll += game.RollDice;
+            game.OnDiceRolled += ui.DiceRolled;
+            game.OnMovePlayer += gameView.PositionPlayer;
+            gameView.OnMoveCompleted += game.PostMoveChecks;
+            game.OnGameOver += ui.ShowGameoverScreen;
 
+            // Initialise
+            ui.Init();
+            gameView.Init();
+            game.Init();
+
+            // Run
+            ui.ShowMenuScreen();
+
+        }
     }
 }

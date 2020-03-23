@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace SnakesAndLadders
 {
-    internal class Game
+    public class Game
     {
         public Action OnNewGame;
         public Action OnWaitingForRoll;
@@ -17,7 +16,6 @@ namespace SnakesAndLadders
         private Turn turn;
 
         private List<Player> players;
-        private Player currentPlayer;
 
         public void Inject(Board board, IDice dice, Turn turn)
         {
@@ -31,21 +29,19 @@ namespace SnakesAndLadders
             board.SetupFromView();
         }
 
-        internal void StartNew()
+        public void StartNew()
         {
-            currentPlayer = players[0];
-            turn.OnNextTurn += WaitForRoll;
             resetPlayers();
             turn.Reset();
         }
 
-        internal void SetPlayers(List<Player> players)
+        public void SetPlayers(List<Player> players)
         {
             this.players = players;
             for( int i = 0; i < players.Count; i++ )
                 players[i].Id = i;
 
-            turn.Setup(players.Count);
+            turn.Setup(players);
         }
 
         private void resetPlayers()
@@ -56,31 +52,27 @@ namespace SnakesAndLadders
             }
         }
 
-        internal void WaitForRoll(int playerId)
-        {
-            OnWaitingForRoll?.Invoke();
-            currentPlayer = players[playerId];
-            currentPlayer.StartTurn();
-        }
-
-        internal void RollDice()
+        public void RollDice()
         {
             int d = dice.Roll();
             OnDiceRolled?.Invoke(d);
             movePlayer(d);
         }
 
-        internal void PostMoveChecks()
+        public void PostMoveChecks()
         {
-            // Game Over?
-            if( board.ReachedEndPlace(currentPlayer.PlaceId) )
+            if( checkGameOver() )
             {
-                gameOver(currentPlayer.Id == 0);
+                gameOver(turn.CurrentPlayer.Id == 0);
                 return;
             }
 
-            // Snake or ladder?
-            int jumpVal = board.SnakeOrLadderMoveOffset(currentPlayer.PlaceId);
+            checkSnakeOrLadder();
+        }
+
+        private void checkSnakeOrLadder()
+        {
+            int jumpVal = board.SnakeOrLadderMoveOffset(turn.CurrentPlayer.PlaceId);
             if( jumpVal != 0 )
                 movePlayer(jumpVal);
             else
@@ -89,29 +81,23 @@ namespace SnakesAndLadders
 
         private void movePlayer(int jumpVal)
         {
-            currentPlayer.MoveBy(jumpVal);
+            turn.CurrentPlayer.MoveBy(jumpVal);
 
             // Reached end place?
-            if( board.ReachedEndPlace(currentPlayer.PlaceId) )
-                currentPlayer.MoveTo(board.EndPlace);
+            if( board.ReachedEndPlace(turn.CurrentPlayer.PlaceId) )
+                turn.CurrentPlayer.MoveTo(board.EndPlace);
 
-            OnMovePlayer?.Invoke(currentPlayer.Id, currentPlayer.PlaceId);
+            OnMovePlayer?.Invoke(turn.CurrentPlayer.Id, turn.CurrentPlayer.PlaceId);
+        }
+
+        private bool checkGameOver()
+        {
+            return board.ReachedEndPlace(turn.CurrentPlayer.PlaceId);
         }
 
         private void gameOver(bool humanWon)
         {
-            turn.OnNextTurn -= WaitForRoll;
             OnGameOver?.Invoke(humanWon);
-        }
-
-        internal void Pause()
-        {
-            Time.timeScale = 0;
-        }
-
-        internal void UnPause()
-        {
-            Time.timeScale = 1;
         }
     }
 }

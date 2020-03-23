@@ -1,43 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-internal class Board
+namespace SnakesAndLadders
 {
-    private List<Place> places;
-    private GameView gameView;
-
-    public int EndPlace
+    public class Board
     {
-        get
+        private List<Place> places;
+        private GameView gameView;
+
+        public int EndPlace
         {
-            return places.Count - 1;
+            get
+            {
+                return places.Count - 1;
+            }
         }
-    }
 
-    public void Inject(GameView gameView, List<Place> places)
-    {
-        this.gameView = gameView;
-        this.places = places;
-    }
+        public void Inject(GameView gameView, List<Place> places)
+        {
+            this.gameView = gameView;
+            this.places = places;
+        }
 
-    internal void SetupFromView()
-    {
-        var placesJumpNextValues = gameView.PieceJumpNextValues();
+        public void SetupFromView()
+        {
+            var placesJumpNextValues = gameView.PieceJumpNextValues();
 
-        foreach( int jumpIndex in placesJumpNextValues )
-            places.Add(new Place(jumpIndex));
-    }
+            foreach( int jumpIndex in placesJumpNextValues )
+                places.Add(new Place(jumpIndex));
+        }
 
-    internal int SnakeOrLadderMoveOffset(int placeId)
-    {
-        if( places[placeId].JumpTo == 0 )
-            return 0;
+        public int SnakeOrLadderMoveOffset(int placeId)
+        {
+            if( places[placeId].JumpTo == 0 )
+                return 0;
 
-        return places[placeId].JumpTo - placeId;
-    }
+            return places[placeId].JumpTo - placeId;
+        }
 
-    internal bool ReachedEndPlace(int placeId)
-    {
-        return placeId >= EndPlace;
+        public bool ReachedEndPlace(int placeId)
+        {
+            return placeId >= EndPlace;
+        }
     }
 }

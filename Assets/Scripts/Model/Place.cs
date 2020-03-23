@@ -1,4 +1,4 @@
-﻿internal class Place
+﻿public class Place
 {
     private int jumpIndex;
 

@@ -1,6 +1,6 @@
 ﻿namespace SnakesAndLadders
 {
-    internal class PlayerBot : Player
+    public class PlayerBot : Player
     {
         public override void StartTurn()
         {

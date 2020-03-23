@@ -1,6 +1,6 @@
 ﻿namespace SnakesAndLadders
 {
-    internal class PlayerHuman : Player
+    public class PlayerHuman : Player
     {
         public override void StartTurn()
         {

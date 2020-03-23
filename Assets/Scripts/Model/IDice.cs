@@ -1,6 +1,6 @@
 ﻿namespace SnakesAndLadders
 {
-    interface IDice
+    public interface IDice
     {
         int Roll();
     }

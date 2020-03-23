@@ -3,42 +3,45 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameUi : MonoBehaviour
+namespace SnakesAndLadders
 {
-    public Action OnRoll;
-
-    public TextMeshProUGUI TurnLabel;
-    public TextMeshProUGUI RollLabel;
-    public Button RollButton;
-
-    internal void Init()
+    public class GameUi : MonoBehaviour
     {
-        RollLabel.text = "Roll to start game";
-        RollButton.interactable = true;
-    }
+        public Action OnRoll;
 
-    public void UpdateTurn(bool humansTurn)
-    {
-        if( humansTurn )
+        public TextMeshProUGUI TurnLabel;
+        public TextMeshProUGUI RollLabel;
+        public Button RollButton;
+
+        public void Init()
         {
-            TurnLabel.text = "Your turn";
-            RollLabel.text = "Press Roll";
+            RollLabel.text = "Roll to start game";
             RollButton.interactable = true;
         }
-        else
+
+        public void UpdateTurn(bool humansTurn)
         {
-            TurnLabel.text = "Bots turn";
+            if( humansTurn )
+            {
+                TurnLabel.text = "Your turn";
+                RollLabel.text = "Press Roll";
+                RollButton.interactable = true;
+            }
+            else
+            {
+                TurnLabel.text = "Bots turn";
+            }
         }
-    }
 
-    public void ShowDice(int dice)
-    {
-        RollLabel.text = dice.ToString();
-    }
+        public void ShowDice(int dice)
+        {
+            RollLabel.text = dice.ToString();
+        }
 
-    public void RollClicked()
-    {
-        RollButton.interactable = false;
-        OnRoll?.Invoke();
+        public void RollClicked()
+        {
+            RollButton.interactable = false;
+            OnRoll?.Invoke();
+        }
     }
 }

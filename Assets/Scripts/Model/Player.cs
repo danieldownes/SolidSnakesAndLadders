@@ -1,24 +1,25 @@
 ﻿using System;
 
-internal abstract class Player
+namespace SnakesAndLadders
 {
-    public Action OnRoll;
-
-    public int Id;
-    public int PlaceId { get; private set; }
-
-    public virtual void StartTurn()
+    public abstract class Player
     {
+        public Action OnRoll;
 
-    }
+        public int Id;
+        public int PlaceId { get; private set; }
 
-    internal void MoveBy(int d)
-    {
-        PlaceId += d;
-    }
+        public virtual void StartTurn()
+        { }
 
-    internal void MoveTo(int placeId)
-    {
-        PlaceId = placeId;
+        public void MoveBy(int d)
+        {
+            PlaceId += d;
+        }
+
+        public void MoveTo(int placeId)
+        {
+            PlaceId = placeId;
+        }
     }
 }

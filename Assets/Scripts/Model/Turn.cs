@@ -1,29 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SnakesAndLadders
 {
-    internal class Turn
+    public class Turn
     {
         public Action<int> OnNextTurn;
 
         private int playerIndex;
-        private int playerCount;
+        private List<Player> players;
 
-        internal void Setup(int playerCount)
+        public Player CurrentPlayer { get; private set; }
+
+        public void Setup(List<Player> players)
         {
-            this.playerCount = playerCount;
+            this.players = players;
         }
 
-        internal void Reset()
+        public void Reset()
         {
             playerIndex = 0;
+            CurrentPlayer = players[playerIndex];
         }
 
         public void Next()
         {
             playerIndex++;
-            if( playerIndex >= playerCount )
+            if( playerIndex >= players.Count )
                 playerIndex = 0;
+
+            CurrentPlayer = players[playerIndex];
+            CurrentPlayer.StartTurn();
 
             OnNextTurn?.Invoke(playerIndex);
         }

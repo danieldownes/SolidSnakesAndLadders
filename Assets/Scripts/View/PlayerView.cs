@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 
-public class PlayerView : MonoBehaviour
+namespace SnakesAndLadders
 {
-    public int Id;
-    private float positionOffset = 0.2f;
-
-    internal void MoveTo(Vector3 pos)
+    public class PlayerView : MonoBehaviour
     {
-        transform.position = pos;
-        transform.Translate(0, positionOffset, Id == 0 ? positionOffset : -positionOffset);
+        public int Id;
+        private float positionOffset = 0.2f;
+
+        public void MoveTo(Vector3 pos)
+        {
+            transform.position = pos;
+            transform.Translate(0, positionOffset, Id == 0 ? positionOffset : -positionOffset);
+        }
     }
 }
